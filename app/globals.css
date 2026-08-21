@@ -1,0 +1,1731 @@
+@import "tailwindcss";
+
+:root {
+  --black: #1b1b1b;
+  --primary: #fda228;
+  --whitewhite: #ffffff;
+  --secondary: #fc3e6b;
+  --tertiary: #1daafc;
+  --background: var(--whitewhite);
+  --foreground: var(--black);
+  --border: #242b3d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Live bazil.fr font families, served from the original Webflow CDN */
+@font-face {
+  font-family: "Media sans extended";
+  src: url("https://cdn.prod.website-files.com/61dd9ddd76c6a058a47a4c57/624325e94e62e146c669871c_Media%20Sans%20SemiCondensed%20-%20Extended.eot") format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61dd9ddd76c6a058a47a4c57/624325ea630c625303e9b1f9_Media%20Sans%20SemiCondensed%20-%20Extended.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Media Sans Semicondensed";
+  src: url("https://cdn.prod.website-files.com/61dd9ddd76c6a058a47a4c57/61dda8782d6530778e4343c5_mediasanssemicondensed-bold-TRIAL.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sfprodisplay";
+  src: url("https://cdn.prod.website-files.com/61dd9ddd76c6a058a47a4c57/61dda8ac2d6530d8d9434405_SFProDisplay-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sfprodisplay";
+  src: url("https://cdn.prod.website-files.com/61dd9ddd76c6a058a47a4c57/61dda8ad7ba2babdf37e071d_SFProDisplay-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sfprodisplay";
+  src: url("https://cdn.prod.website-files.com/61dd9ddd76c6a058a47a4c57/61dda8ad0965b81fb8c985ba_SFProDisplay-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  color: var(--black);
+  margin-top: 0;
+  margin-bottom: 1.67rem;
+  font-family: "Media sans extended", sans-serif;
+  font-size: 6em;
+  font-weight: 700;
+  line-height: 1.11;
+}
+
+h2 {
+  color: var(--black);
+  margin-top: 0;
+  margin-bottom: 1.11rem;
+  font-family: "Media sans extended", sans-serif;
+  font-size: 3.33em;
+  font-weight: 700;
+  line-height: 1.17;
+}
+
+p {
+  margin-bottom: 1.11rem;
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: 1.5em;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header / navigation — replicates the live bazil.fr top bar          */
+/* ------------------------------------------------------------------ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.4rem clamp(1.5rem, 4vw, 3.5rem);
+  background: var(--whitewhite);
+}
+
+.nav__logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.nav__logo-img {
+  width: 150px;
+  height: auto;
+  display: block;
+}
+
+.nav__menu {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 2.6vw, 3rem);
+}
+
+.nav__link {
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--black);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.nav__link:hover {
+  opacity: 0.55;
+}
+
+.nav__lang {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav__lang-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: 1rem;
+  color: #9a9a9a;
+  transition: color 0.2s ease;
+}
+
+.nav__lang-btn.is--active {
+  color: var(--black);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+/* Hamburger — hidden on desktop, shown on tablet/mobile */
+.menu__button {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+  height: 20px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.menu__button .line {
+  width: 100%;
+  height: 2px;
+  background-color: var(--black);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu__button.is--open .line:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.menu__button.is--open .line:nth-child(2) {
+  opacity: 0;
+}
+
+.menu__button.is--open .line:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+/* Full-screen overlay menu (tablet/mobile) */
+.nav__mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 6rem 1.5rem 3rem;
+  background: var(--whitewhite);
+}
+
+.nav__mobile.is--open {
+  display: flex;
+}
+
+.nav__item--wrapper {
+  text-decoration: none;
+}
+
+.nav__item--title {
+  font-family: "Media sans extended", sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 9vw, 4rem);
+  letter-spacing: -0.02em;
+  color: var(--black);
+}
+
+@media (min-width: 1024px) {
+  .nav__mobile {
+    display: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Intro / hero                                                        */
+/* ------------------------------------------------------------------ */
+.section.is--intro {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--whitewhite);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 15vh 0 4rem;
+}
+
+.container-xl {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.container-xl.is--intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "content photo"
+        "buttons photo";
+    column-gap: 30px;
+    align-items: center;
+}
+
+/* Tablet */
+@media (max-width: 991px) {
+    .container-xl.is--intro {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "photo"
+            "content"
+            "buttons";
+        row-gap: 20px;
+        text-align: center;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .container-xl.is--intro {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "photo"
+            "content"
+            "buttons";
+        gap: 15px;
+    }
+}
+
+/* .container-xl.is--intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 440px);
+  grid-template-areas:
+    "content photo"
+    "buttons photo";
+  align-items: start;
+  column-gap: 2.5rem;
+} */
+
+.intro__content-wrapper {
+  grid-area: content;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  z-index: 2;
+}
+
+.intro__text {
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--black);
+  font-weight: 300;
+}
+
+.heading-outline__wrapper {
+  display: block;
+  position: relative;
+}
+
+.heading-outline,
+.heading-outline.is--first,
+.heading-xl {
+  font-family: "Media sans extended", sans-serif;
+  font-weight: 800;
+  line-height: 0.98;
+  font-size: clamp(2.75rem, 5.5vw, 5rem);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.intro__link,
+.intro__link-photo {
+  font: inherit;
+  color: var(--black);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.intro__link-photo.is--outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--black);
+}
+
+.intro__bottom-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 2.5rem;
+  margin-top: 1.5rem;
+}
+
+.intro__text.is--left {
+  white-space: nowrap;
+}
+
+.intro__clients {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.client__logo {
+  width: auto;
+  height: 1.9rem;
+  opacity: 0.5;
+  filter: grayscale(1);
+  transition: opacity 0.25s ease, filter 0.25s ease;
+}
+
+.client__logo:hover {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.intro__photo {
+  grid-area: photo;
+  align-self: end;
+  justify-self: end;
+  width: 100%;
+  max-width: 550px;
+  height: auto;
+}
+
+.intro__buttons {
+  grid-area: buttons;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-self: end;
+  margin-top: 2.5rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Design hero — centred tagline + heading + CTA + client logos        */
+/* (replicates the top section of bazil.fr/design)                     */
+/* ------------------------------------------------------------------ */
+.section.is--design {
+  position: relative;
+  background-color: var(--whitewhite);
+  padding: clamp(7rem, 16vh, 11rem) 0 clamp(2.5rem, 6vh, 4.5rem);
+}
+
+.design__inner {
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.design__tagline {
+  margin: 0 0 1.5rem;
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: clamp(0.8rem, 1.1vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.design__heading {
+  margin: 0;
+  max-width: 14ch;
+  text-align: center;
+  font-size: clamp(2.75rem, 7vw, 6rem);
+  line-height: 0.98;
+}
+
+.design__cta {
+  margin-top: clamp(2rem, 4vh, 3rem);
+}
+
+.design__clients {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  margin-top: clamp(3rem, 7vh, 5rem);
+  width: 100%;
+}
+
+.design__client-logo {
+  height: clamp(1.6rem, 2.4vw, 2.1rem);
+  width: auto;
+  object-fit: contain;
+  opacity: 0.65;
+  filter: grayscale(1);
+  transition: opacity 0.25s ease, filter 0.25s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.design__client-logo:hover {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+/* ------------------------------------------------------------------ */
+/* Performance — "crossed-out + corrected" heading + intro copy        */
+/* (replicates the value-proposition block on bazil.fr/design)         */
+/* ------------------------------------------------------------------ */
+.section.is--performance {
+  position: relative;
+  background-color: var(--whitewhite);
+  padding: clamp(3rem, 9vh, 7rem) 0;
+}
+
+.performance__inner {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+  text-align: left;
+}
+
+.performance__heading {
+  margin: 0 0 1.75rem;
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  line-height: 1.02;
+}
+
+.performance__strike,
+.performance__line {
+  display: block;
+}
+
+.performance__strike {
+  position: relative;
+  width: fit-content;
+  text-decoration: line-through;
+  text-decoration-color: var(--primary);
+  text-decoration-thickness: clamp(4px, 0.45vw, 7px);
+}
+
+.performance__text {
+  font-size: clamp(1.05rem, 1.5vw, 1.5rem);
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--black);
+}
+
+.performance__text strong {
+  font-weight: 600;
+}
+
+.performance__text:last-child {
+  margin-bottom: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Latest projects — dark draggable card carousel with arrow nav       */
+/* (replicates the "Derniers projets" section on bazil.fr/design)      */
+/* ------------------------------------------------------------------ */
+.section.is--projects {
+  position: relative;
+  background-color: var(--black);
+  color: var(--whitewhite);
+  padding: clamp(3rem, 8vh, 6rem) 0 clamp(3.5rem, 9vh, 6.5rem);
+  overflow: hidden;
+}
+
+.projects__head {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.projects__title {
+  margin: 0;
+  color: var(--whitewhite);
+  font-family: "Media sans extended", sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.projects__nav {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.projects__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--whitewhite);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.projects__arrow svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.projects__arrow:hover:not(:disabled) {
+  background: var(--whitewhite);
+  color: var(--black);
+  border-color: var(--whitewhite);
+}
+
+.projects__arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.projects__track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5rem clamp(1.5rem, 4vw, 3.5rem);
+  scroll-padding-left: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.projects__track::-webkit-scrollbar {
+  display: none;
+}
+
+.projects__track:active {
+  cursor: grabbing;
+}
+
+.project__card {
+  position: relative;
+  flex: none;
+  width: clamp(15rem, 24vw, 18rem);
+  aspect-ratio: 3 / 4;
+  border-radius: 1rem;
+  overflow: hidden;
+  text-decoration: none;
+  scroll-snap-align: start;
+  background: #2a2a2a;
+  transition: transform 0.3s ease;
+}
+
+.project__card:hover {
+  transform: translateY(-6px);
+}
+
+.project__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.project__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  padding: 1.4rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.25) 45%,
+    rgba(0, 0, 0, 0) 75%
+  );
+}
+
+.project__name {
+  margin: 0;
+  color: var(--whitewhite);
+  font-family: "Media sans extended", sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.2rem, 1.6vw, 1.55rem);
+  line-height: 1.05;
+}
+
+.project__desc {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.85rem, 1vw, 0.98rem);
+  line-height: 1.3;
+}
+
+/* ------------------------------------------------------------------ */
+/* Showcase — the draggable "webpages" project carousel                */
+/* (replicates the hero carousel on bazil.fr/design)                   */
+/* ------------------------------------------------------------------ */
+.section.is--webpages {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--whitewhite);
+  padding-top: 4rem;
+  height: 34em;
+}
+
+.hero__webpages {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hero__webpages::-webkit-scrollbar {
+  display: none;
+}
+
+.hero__webpages:active {
+  cursor: grabbing;
+}
+
+.webpages__wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: auto;
+  margin: 0 auto;
+  padding: 0 max(1.5rem, calc(50vw - 36em));
+}
+
+.webpages__container {
+  position: relative;
+  flex: none;
+  width: 16em;
+  height: 28em;
+  margin: 0 0.83em;
+  border-radius: 0.83em;
+  overflow: hidden;
+  scroll-snap-align: center;
+  box-shadow: 0 32px 32px #1b1b1b0d, 0 16px 16px #1b1b1b1a,
+    0 8px 8px #1b1b1b1a, 0 4px 4px #1b1b1b1a, 0 2px 2px #1b1b1b1a;
+}
+
+.webpages__container.is--1 {
+  top: 0;
+}
+.webpages__container.is--2 {
+  top: 2.6em;
+}
+.webpages__container.is--3 {
+  top: 5.2em;
+}
+.webpages__container.is--4 {
+  top: 7.8em;
+}
+
+.webpages__lightbox {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.webpages__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 767px) {
+  .section.is--webpages {
+    height: 28em;
+  }
+  .webpages__container {
+    width: 13em;
+    height: 22em;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Communication visuelle — sticky text + staggered poster column      */
+/* (replicates the "Tourné vers l'évènementiel" block on bazil.fr)     */
+/* ------------------------------------------------------------------ */
+.section.is--communication {
+  position: relative;
+  background-color: var(--whitewhite);
+  padding: clamp(4rem, 10vh, 8rem) 0;
+}
+
+.communication__inner {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.communication__text {
+  position: sticky;
+  top: clamp(8rem, 32vh, 16rem);
+  align-self: start;
+}
+
+.communication__tagline {
+  margin: 0 0 1.25rem;
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: clamp(0.8rem, 1.1vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.communication__heading {
+  margin: 0 0 1.75rem;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.02;
+}
+
+.communication__copy {
+  max-width: 36ch;
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.4rem);
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--black);
+}
+
+.communication__copy strong {
+  font-weight: 600;
+}
+
+.communication__copy:last-child {
+  margin-bottom: 0;
+}
+
+/* Two side-by-side poster columns; the left one is offset downward so the
+   columns interlock, exactly like the live site. */
+.communication__cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(1rem, 2vw, 1.75rem);
+  align-items: start;
+}
+
+.communication__col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.communication__col.is--left {
+  margin-top: clamp(3rem, 8vw, 6rem);
+}
+
+.communication__card {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: #ededed;
+  box-shadow: 0 32px 32px #1b1b1b0d, 0 16px 16px #1b1b1b14,
+    0 8px 8px #1b1b1b14, 0 4px 4px #1b1b1b14;
+}
+
+.communication__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 1023px) {
+  .communication__inner {
+    grid-template-columns: 1fr;
+    row-gap: clamp(2.5rem, 7vh, 4rem);
+  }
+  .communication__text {
+    position: static;
+    top: auto;
+  }
+  .communication__col.is--left {
+    margin-top: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Contact CTA — "Prenons rendez-vous !" over an office photo           */
+/* (replicates .section.is--contact on bazil.fr)                        */
+/* ------------------------------------------------------------------ */
+.section.is--contact {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 80vh;
+  /* Dark wash over the office photo, exactly like the live site. */
+  background-image: linear-gradient(rgba(27, 27, 27, 0.4), rgba(27, 27, 27, 0.4)),
+    url("/cta-banner.png");
+  background-position: 0 0, 50%;
+  background-size: auto, cover;
+  background-repeat: no-repeat;
+}
+
+.container.is--contact {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.contact__content.is--centered {
+  max-width: 36rem;
+  text-align: center;
+  color: var(--whitewhite);
+}
+
+.contact__heading {
+  margin: 0 0 1rem;
+  color: var(--whitewhite);
+  font-family: "Media sans extended", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+  line-height: 1.12;
+}
+
+.contact__copy {
+  margin: 0;
+  color: var(--whitewhite);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-weight: 300;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.4;
+}
+
+.cta__footer-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 2em auto 0;
+}
+
+.cta__footer-wrapper .margin-right {
+  margin-right: 1.11em;
+}
+
+/* White (reversed) button used in the CTA. */
+.cta.is--reverse {
+  max-width: 340px;
+  text-align: center;
+  background-color: #fff;
+  color: var(--black);
+  border-color: #fff;
+}
+
+.cta.is--reverse:hover {
+  background-color: #fff;
+  color: var(--black);
+}
+
+/* ------------------------------------------------------------------ */
+/* Footer — black bar: credit line + section nav                        */
+/* (replicates .footer.is--black on bazil.fr)                           */
+/* ------------------------------------------------------------------ */
+.footer.is--black {
+  background-color: var(--black);
+  padding: clamp(2rem, 4vh, 3rem) 0;
+}
+
+.container.is--footer {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.footer__text {
+  color: var(--whitewhite);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+.footer__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.footer__nav .nav__item {
+  color: var(--whitewhite);
+  text-decoration: none;
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  transition: opacity 0.2s ease;
+}
+
+.footer__nav .nav__item:hover {
+  opacity: 0.6;
+}
+
+.footer__nav .nav__item.w--current {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+@media (max-width: 767px) {
+  .section.is--contact {
+    justify-content: center;
+    height: 60vh;
+    background-position: 0 0, 72%;
+  }
+  .container.is--contact {
+    justify-content: center;
+  }
+  .container.is--footer {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+  }
+  .footer__nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* FAQ accordion (replicates the .faq__wrapper block on bazil.fr)       */
+/* ------------------------------------------------------------------ */
+.section.is--faq {
+  position: relative;
+  background-color: var(--whitewhite);
+  padding: clamp(3rem, 9vh, 7rem) 0;
+}
+
+.faq__wrapper {
+  width: min(100%, 1000px);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.faq__single {
+  border-bottom: 1px solid var(--black);
+  margin-bottom: clamp(1.5rem, 3.33vw, 3.33rem);
+  overflow: hidden;
+}
+
+.faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.faq__question .question {
+  display: block;
+  width: 90%;
+  margin-bottom: 1.11rem;
+  color: var(--black);
+  font-family: "Media sans extended", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.7rem);
+  line-height: 1.17;
+}
+
+.faq__arrow {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(3rem, 4vw, 4rem);
+  height: clamp(3rem, 4vw, 4rem);
+  border-radius: 50%;
+  background-color: var(--black);
+  transition: transform 0.35s ease;
+}
+
+/* Closed → right arrow; open → rotate so it points up. */
+.faq__single.is--open .faq__arrow {
+  transform: rotate(-90deg);
+}
+
+/* Smooth open/close via the grid-rows 0fr → 1fr trick. */
+.faq__answer-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s ease;
+}
+
+.faq__single.is--open .faq__answer-wrap {
+  grid-template-rows: 1fr;
+}
+
+.faq__answer {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.faq__answer p {
+  margin: 0 0 1.5rem;
+  max-width: 64ch;
+  color: var(--black);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-weight: 300;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  line-height: 1.55;
+}
+
+.faq__answer p:first-child {
+  margin-top: 1.11rem;
+}
+
+.faq__answer p:last-child {
+  margin-bottom: 2rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Testimonials — fanned card slider + text block                      */
+/* (replicates .section.is--testimonials on bazil.fr/design)           */
+/* ------------------------------------------------------------------ */
+.section.is--testimonials {
+  position: relative;
+  background-color: var(--whitewhite);
+  padding: clamp(3rem, 9vh, 7rem) 0;
+}
+
+.skills__testimonials {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+  display: grid;
+  grid-template-columns: 1fr 0.75fr;
+  column-gap: clamp(2.5rem, 7vw, 8.88rem);
+  align-items: center;
+}
+
+.testimonial__slider {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  transform: scale(0.9);
+}
+
+.slider__mask {
+  position: relative;
+  width: min(33.33em, 78vw);
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+}
+
+/* --- Fanned cards --------------------------------------------------- */
+.tcard {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  transform-origin: 50%;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  will-change: transform;
+}
+
+.tcard__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Caption only shows on the front card, like the live site. */
+.tcard__body {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.9rem;
+  padding: clamp(1.4rem, 2.4vw, 2.2rem);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.28) 38%,
+    rgba(0, 0, 0, 0) 62%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.tcard__quote {
+  margin: 0;
+  color: var(--whitewhite);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+  line-height: 1.32;
+}
+
+.tcard__author {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: clamp(0.85rem, 1vw, 1rem);
+}
+
+.tcard__name {
+  font-weight: 600;
+  color: var(--whitewhite);
+}
+
+/* Stack positions — mirror the live previous/current/next transforms. */
+.tcard.is--current {
+  z-index: 2;
+  transform: translateX(0) rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+.tcard.is--current .tcard__body {
+  opacity: 1;
+}
+
+.tcard.is--next {
+  z-index: 1;
+  transform: translateX(120px) rotate(3deg) scale(0.8);
+  opacity: 1;
+}
+
+.tcard.is--previous {
+  z-index: 0;
+  transform: translateX(-120px) rotate(-3deg) scale(0.8);
+  opacity: 1;
+}
+
+.tcard.is--hidden {
+  z-index: 0;
+  transform: translateX(0) rotate(0deg) scale(0.8);
+  opacity: 0;
+}
+
+/* --- Arrows --------------------------------------------------------- */
+.slider__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 2px solid var(--black);
+  border-radius: 50%;
+  background-color: #fff;
+  color: #101010;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.slider__arrow:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+.slider__arrow.left {
+  left: 0.56em;
+  transform: translate(-50%, -50%);
+}
+
+.slider__arrow.right {
+  right: 0.56em;
+  transform: translate(50%, -50%);
+}
+
+/* --- Right-hand text block ----------------------------------------- */
+.about__list-text .skills__single--title {
+  margin: 0.75rem 0 1.25rem;
+  color: var(--black);
+  font-family: "Media sans extended", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  line-height: 1.08;
+}
+
+.about__list-text .skills__single--text {
+  margin: 0;
+  color: var(--black);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-weight: 300;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.55;
+}
+
+.about__list-text .skills__single--text .bold {
+  font-weight: 600;
+}
+
+.about__list-text .heading_style-h5 {
+  display: inline-block;
+  color: var(--primary);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+@media (max-width: 1023px) {
+  .skills__testimonials {
+    grid-template-columns: 1fr;
+    row-gap: clamp(3rem, 8vh, 5rem);
+    justify-items: center;
+    text-align: center;
+  }
+  .about__list-text {
+    order: -1;
+    max-width: 38rem;
+  }
+  .about__list-text .skills__single--title,
+  .about__list-text .skills__single--text {
+    text-align: center;
+  }
+  .slider__mask {
+    width: min(26em, 82vw);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Photographie — black teaser: centred overlay over a 4-column photo  */
+/* grid that drifts vertically on scroll (replicates .section.is--photos */
+/* on bazil.fr/design).                                                 */
+/* ------------------------------------------------------------------ */
+.section.is--photos {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.photos__link {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Dark wash over the photos — hard-light keeps the colours rich while
+   dimming everything so the centred text stays legible. */
+.section.is--photos .filter {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background-color: var(--black);
+  opacity: 0.7;
+  mix-blend-mode: hard-light;
+  pointer-events: none;
+}
+
+.photos-bg__wrapper {
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  transform: scale(1.1);
+}
+
+.photos-bg__column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+}
+
+/* Even columns sit higher so the four columns interlock. */
+.photos-bg__column.is--even {
+  position: relative;
+  top: -8em;
+}
+
+.photos-bg__single {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 1.67em;
+  padding: 0.8em;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.galerie__text {
+  position: absolute;
+  z-index: 9999;
+  max-width: 60%;
+  text-align: center;
+  pointer-events: none;
+}
+
+.galerie__text .heading_style-h5 {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+}
+
+.galerie__text .heading-md {
+  margin: 0 0 1.11rem;
+  font-family: "Media sans extended", sans-serif;
+  font-size: clamp(2rem, 4.4vw, 3.3rem);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.galerie__text .text-white {
+  color: var(--whitewhite);
+}
+
+.galerie__text .text-lg {
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.35;
+}
+
+.galerie__text .text-lg.is--photos {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+}
+
+.galerie__text .bold {
+  font-weight: 600;
+}
+
+/* The CTA must stay clickable even though the text wrapper ignores pointers. */
+.galerie__text .cta {
+  pointer-events: auto;
+}
+
+.cta.is--ghost.white {
+  border-color: var(--whitewhite);
+  color: var(--whitewhite);
+  background-color: transparent;
+}
+
+.cta.is--ghost.white:hover {
+  background-color: var(--whitewhite);
+  color: var(--black);
+}
+
+@media (max-width: 1023px) {
+  .section.is--photos {
+    height: 80vh;
+  }
+  .photos-bg__wrapper {
+    transform: scale(1.4);
+  }
+  .photos-bg__column.is--even {
+    top: -4em;
+  }
+  .galerie__text {
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 600px) {
+  .section.is--photos {
+    height: 70vh;
+  }
+  .photos-bg__wrapper {
+    transform: scale(1.6);
+  }
+  /* Drop the outer columns to a tighter 2-up grid on phones. */
+  .photos-bg__column.one {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Marquee — diagonal, infinitely-scrolling text band                  */
+/* (replicates the running-text section on bazil.fr/design)            */
+/* ------------------------------------------------------------------ */
+.section.is--marquee {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--whitewhite);
+  padding: clamp(4rem, 12vh, 9rem) 0;
+}
+
+.marquee__band {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.1rem, 0.6vw, 0.5rem);
+  /* Tilt the whole band; the over-wide tracks keep the edges off-screen. */
+  transform: rotate(-7deg);
+  transform-origin: center;
+}
+
+.marquee__row {
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee__track {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+  animation: marquee-scroll 28s linear infinite;
+}
+
+.marquee__track.is--reverse {
+  animation-direction: reverse;
+}
+
+.marquee__group {
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+
+.marquee__word {
+  display: inline-flex;
+  align-items: center;
+  font-family: "Media sans extended", sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.75rem, 7vw, 6.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.marquee__sep {
+  white-space: pre;
+}
+
+/* Outlined catch-phrase row */
+.is--outline .marquee__word {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #c9c9c9;
+}
+
+/* Filled services row */
+.is--fill .marquee__word {
+  color: var(--black);
+}
+
+/* Pause on hover, like the live site */
+.section.is--marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Buttons / CTAs                                                      */
+/* ------------------------------------------------------------------ */
+.cta__mobile,
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-width: 14rem;
+  padding: 1rem 1.6rem;
+  border: 1px solid var(--black);
+  border-radius: 0.4rem;
+  text-decoration: none;
+  font-family: "Sfprodisplay", Arial, sans-serif;
+  font-weight: 300;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  background-color: var(--black);
+  color: var(--whitewhite);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease,
+    background-color 0.25s ease, color 0.25s ease;
+}
+
+.cta:hover,
+.cta__mobile:hover {
+  box-shadow: 0 18px 24px #1b1b1b1f, 0 8px 10px #1b1b1b14;
+  transform: translateY(-2px);
+}
+
+.cta.is--ghost,
+.cta__mobile.is--ghost {
+  background-color: transparent;
+  color: var(--black);
+}
+
+.padding--right {
+  padding-right: 2rem;
+}
+
+/* Header email button — compact pill, no full-width minimum */
+.cta.menu {
+  min-width: auto;
+  padding: 0.85rem 1.6rem;
+  font-size: 1.05rem;
+}
+
+.cta.menu.is--mobile {
+  margin-top: 1.5rem;
+}
+
+.no--mobile {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .cta__mobile {
+    display: none;
+  }
+  .no--mobile {
+    display: inline-flex;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive — tablet / mobile                                        */
+/* ------------------------------------------------------------------ */
+@media (max-width: 1023px) {
+  .nav__menu {
+    display: none;
+  }
+  .menu__button {
+    display: flex;
+  }
+  /* .container-xl.is--intro {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "content"
+      "photo"
+      "buttons";
+    row-gap: 2.5rem;
+  } */
+  .intro__photo {
+    justify-self: center;
+    margin: 0 auto;
+  }
+  .intro__buttons {
+    justify-content: center;
+    width: 100%;
+    margin-top: 0;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fade-in-up 0.9s ease-out both;
+  }
+
+  .animate-float-slow {
+    animation: float-slow 7s ease-in-out infinite;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
